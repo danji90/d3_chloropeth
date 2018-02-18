@@ -1,15 +1,20 @@
+
 //Width and height
 var w = 1200;
 var h = 700;
 
-var color = [0xb2182b,0xd6604d,0xf4a582,0xfddbc7,0xf7f7f7,0xd1e5f0,0x92c5de,0x4393c3,0x2166ac].map(function(x) {
+var color = [0xfff5f0,0xfee0d2,0xfcbba1,0xfc9272,0xfb6a4a,0xef3b2c,0xcb181d,0xa50f15,0x67000d].map(function(x) {
     var value = x + "";
     return d3.rgb(value >> 16, value >> 8 & 0xff, value & 0xff).toString();
 });
 
-[0xb2182b,0xd6604d,0xf4a582,0xfddbc7,0xf7f7f7,0xd1e5f0,0x92c5de,0x4393c3,0x2166ac]
 
-var color = d3.scale.ordinal().range(color);
+// color options
+// red to blue: [0xb2182b,0xd6604d,0xf4a582,0xfddbc7,0xf7f7f7,0xd1e5f0,0x92c5de,0x4393c3,0x2166ac]
+// red fading to yellow (may have to reverse the array): [0xffffcc,0xffeda0,0xfed976,0xfeb24c,0xfd8d3c,0xfc4e2a,0xe31a1c,0xbd0026,0x800026]
+// fading red [0xfff5f0,0xfee0d2,0xfcbba1,0xfc9272,0xfb6a4a,0xef3b2c,0xcb181d,0xa50f15,0x67000d]
+
+var color = d3.scale.ordinal().range(color.reverse());
 
 // var color = d3.scale.quantize()
 //               .range(["rgb(237,248,233)", "rgb(186,228,179)",
@@ -34,8 +39,6 @@ var svg = d3.select("#map")
       .append("svg")
       .attr("width", w)
       .attr("height", h);
-
-
 
 
 // Load productivity data
@@ -77,42 +80,7 @@ d3.json("http://emotional-apps.com/apis/meit/stats/getdata.php?test=1&gender=all
     }
     console.log(json)
 
-    var x = d3.scale.linear()
-    .domain([1, 10])
-    .rangeRound([600, 860]);
-
-    var g = svg.append("g")
-        .attr("class", "key")
-        .attr("transform", "translate(0,40)");
-
-    g.selectAll("rect")
-      .data(color.range().map(function(d) {
-        d = color.invertExtent(d);
-        if (d[0] == null) d[0] = x.domain()[0];
-        if (d[1] == null) d[1] = x.domain()[1];
-        return d;
-      }))
-      .enter().append("rect")
-        .attr("height", 8)
-        .attr("x", function(d) { return color(d[0]); })
-        .attr("width", function(d) { return color(d[1]) - color(d[0]); })
-        .attr("fill", function(d) { return color(d[0]); });
-
-    // g.append("text")
-    //     .attr("class", "caption")
-    //     .attr("x", x.range()[0])
-    //     .attr("y", -6)
-    //     .attr("fill", "#000")
-    //     .attr("text-anchor", "start")
-    //     .attr("font-weight", "bold")
-    //     .text("Emotional Intelligence");
-    //
-    // g.call(d3.axisBottom(x)
-    //     .tickSize(13)
-    //     .tickFormat(function(x, i) { return i ? x : x + "%"; })
-    //     .tickValues(color.domain()))
-    //   .select(".domain")
-    //     .remove();
+    //var SVGmouseTip = d3.select("g.tooltip.mouse");
 
     svg.selectAll("path")
                  .data(json.features)
@@ -130,7 +98,14 @@ d3.json("http://emotional-apps.com/apis/meit/stats/getdata.php?test=1&gender=all
                                       //If value is undefined...
                                       return "#ccc";
                               }
-                 });
+                 })
+                 .on("click", function(i){
+                   console.log(i.id)
+                 })
+
+                 // .on("click", function(i){
+                 //   console.log(i.id);
+                 // })
 
   });
 
