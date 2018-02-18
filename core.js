@@ -1,7 +1,7 @@
 
 //Width and height
-var w = 1200;
-var h = 700;
+var w = 1000;
+var h = 600;
 
 var color = [0xfff5f0,0xfee0d2,0xfcbba1,0xfc9272,0xfb6a4a,0xef3b2c,0xcb181d,0xa50f15,0x67000d].map(function(x) {
     var value = x + "";
@@ -27,7 +27,7 @@ var color = d3.scale.ordinal().range(color.reverse());
 //                               .scale([200]);
 
 
-var projection = d3.geo.winkel3().translate([w/2, h/2]).scale([250]);
+var projection = d3.geo.winkel3().translate([w/2, h/2]).scale([200]);
 
 
 //Define path generator
