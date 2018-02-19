@@ -1,4 +1,4 @@
-
+// CHLOROPETH
 //Width and height
 var w = 1000;
 var h = 600;
@@ -80,7 +80,13 @@ d3.json("http://emotional-apps.com/apis/meit/stats/getdata.php?test=1&gender=all
     }
     console.log(json)
 
-    //var SVGmouseTip = d3.select("g.tooltip.mouse");
+    var tip = d3.tip()
+           .attr('class', 'd3-tip')
+           .offset([-10, 0])
+           .html(function(d) {
+             return "<span>" + d.properties.name + "</span> </br> Score: <span>" + d.properties.score_average + "</span>";
+           });
+    svg.call(tip);
 
     svg.selectAll("path")
                  .data(json.features)
@@ -99,9 +105,19 @@ d3.json("http://emotional-apps.com/apis/meit/stats/getdata.php?test=1&gender=all
                                       return "#ccc";
                               }
                  })
-                 .on("click", function(i){
-                   console.log(i.id)
+                 .on("mouseover", function(e) {
+         					d3.select(this).classed("highlight", true);
+                  tip.show(e)
+                  // console.log(e);
+                  // console.log(this)
                  })
+         				 .on("mouseout", function(e) {
+         					d3.select(this).classed("highlight", false);
+                  tip.hide(e)
+         				 })
+                 // .on('mouseover', tip.show)
+                 // .on('mouseout', tip.hide);
+
 
                  // .on("click", function(i){
                  //   console.log(i.id);
